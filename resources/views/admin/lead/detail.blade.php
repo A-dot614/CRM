@@ -7,11 +7,7 @@
                 <span class="font-semibold">Back to Leads</span>
             </a>
 
-            <div class="flex gap-3">
-                <a href="{{ route("edit",$leads->slug) }}" class="px-4 py-2 bg-white border border-slate-200 text-slate-600 text-sm font-bold rounded-xl hover:bg-slate-50 transition shadow-sm flex items-center gap-2">
-                    <i class="fas fa-edit text-xs"></i> Edit Lead
-                </a>
-            </div>
+
         </div>
 
         <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-8 mb-6">

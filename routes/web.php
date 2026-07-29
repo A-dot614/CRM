@@ -17,7 +17,7 @@ Route::get('/send-email',[LeadController::class,'sendEmail'])->name('send.email'
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard',[LeadController::class,'index'])->name('dashboard');
-    Route::post('/dashboard',[LeadController::class,'store'])->name('dashboard');
+    Route::post('/dashboard',[LeadController::class,'store'])->name('dashboard.store');
     Route::get('/dashboard/detail/{leads:slug}',[LeadController::class,'detail'])->name('dashboard.detail');
     Route::get('/dashboard/form',[LeadController::class,'create'])->name('dashboard.create');   
     Route::delete('/dashboard/{lead}/destroy',[LeadController::class,'destroy'])->name('delete');

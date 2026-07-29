@@ -1,7 +1,7 @@
 <x-layouts.adminlayout>
     <div class="p-8 space-y-6">
         <div class="flex items-center gap-4">
-            <a href="{{ route('outreach.show', $outreach->id) }}"
+            <a href="{{ route('outreach.index') }}"
                 class="p-2.5 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition text-gray-500 shadow-sm">
                 <i class="fas fa-arrow-left text-sm"></i>
             </a>
@@ -11,7 +11,7 @@
             </div>
         </div>
 
-        <div class="max-w-4xl">
+        <div class="max-w-6xl">
             <form action="{{ route('outreach.update', $outreach->id) }}" method="POST"
                 class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
                 @csrf
@@ -85,15 +85,15 @@
                         </div>
 
                         <div class="space-y-2 lg:col-span-1">
-                            <label for="some_date"
+                            <label for="date"
                                 class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Interaction
                                 Date</label>
                             <div class="relative">
                                 <span class="absolute inset-y-0 left-0 flex items-center pl-4 text text-slate-400">
                                     <i class="far fa-calendar text-xs"></i>
                                 </span>
-                                <input type="date" name="some_date" id="some_date"
-                                    value="{{ old('some_date', $outreach->some_date?->format('Y-m-d')) }}"
+                                <input type="date" name="date" id="date"
+                                    value="{{ old('date', $outreach->date ? date('Y-m-d', strtotime($outreach->date)) : '') }}"
                                     class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none text-slate-700 font-medium">
                             </div>
                         </div>

@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateOutreachRequest;
 use App\Models\Lead;
 use App\Models\Outreach;
 use App\Models\Outreachchannel;
+use Illumainate\Http\Request;
 
 class OutreachController extends Controller
 {
@@ -34,6 +35,7 @@ class OutreachController extends Controller
      */
     public function store(StoreOutreachRequest $request)
     {
+
         $validated = $request->validate([
             'lead_id' => ['required'],
             'outreach_channel_id' => ['required'],
@@ -75,6 +77,7 @@ class OutreachController extends Controller
      */
     public function update(UpdateOutreachRequest $request, Outreach $outreach)
     {
+        
         $request->validate([
             'lead_id' => ['required'],
             'outreach_channel_id' => ['required'],

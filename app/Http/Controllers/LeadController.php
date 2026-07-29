@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\UpdateLeadRequest;
 use App\Mail\WelcomeUser;
 use App\Models\Lead;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
@@ -53,7 +54,7 @@ class LeadController extends Controller
             "companyLinkedin" => ["required"],
             "companyEmail" => ["required"],
             "userLinkedin" => ["required"],
-            "image" => ["required"],
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
         // dd($request);
         $slug = Str::slug($request->name);
@@ -121,6 +122,7 @@ class LeadController extends Controller
 
         $request->validate([
             "name" => ["required"],
+            "image" => ["nullable", "image", "mimes:jpeg,png,jpg", "max:2048"],
             "email" => ["required"],
             "phone" => ["required"],
             "note" => ["required"],
@@ -134,53 +136,25 @@ class LeadController extends Controller
             "userLinkedin" => ["required"],
         ]);
 
-        $data = [
-            'slug' => \Str::slug($request->name),
-            "name" => $request->name,
-            "email" => $request->email,
-            "phone" => $request->phone,
-            "note" => $request->note,
-            "address" => $request->address,
-            "status" => $request->status,
-            "companyName" => $request->companyName,
-            "source" => $request->source,
-            "companyWebsite" => $request->companyWebsite,
-            "companyLinkedin" => $request->companyLinkedin,
-            "companyEmail" => $request->companyEmail,
-            "userLinkedin" => $request->userLinkedin,
-        ];
+$data = $request->except('image');
+    $data['slug'] = \Str::slug($request->name);
 
-        // Handle image upload
-        if ($request->hasFile('image') && $request->file('image')->isValid()) {
-            // Delete old image if exists
-            if ($lead->image && \Storage::disk('public')->exists($lead->image)) {
-                \Storage::disk('public')->delete($lead->image);
-            }
-            $imagePath = $request->file('image')->store('leads', 'public');
-            $data['image'] = $imagePath;
+    // 2. Image handle karein
+    if ($request->hasFile('image')) {
+        // Purani image delete karein
+        if ($lead->image && \Storage::disk('public')->exists($lead->image)) {
+            \Storage::disk('public')->delete($lead->image);
         }
 
-        $lead->update($data);
-        return redirect()->route('dashboard')->with('success', 'CRM is updated.');
+        // Nayi image save karein
+        $image = $request->file('image');
+        $imageName = "IMG-" . time() . "." . $image->getClientOriginalExtension();
+        $image->storeAs('postImages', $imageName, "public"); // Store folder
+        $data['image'] = "postImages/" . $imageName; // DB path
+    }
 
-
-        $data = [
-            'slug' => Str::slug($request->name),
-            "name" => $request->name,
-            "email" => $request->email,
-            "phone" => $request->phone,
-            "note" => $request->note,
-            "address" => $request->address,
-            "status" => $request->status,
-            "companyName" => $request->companyName,
-            "source" => $request->source,
-            "companyWebsite" => $request->companyWebsite,
-            "companyLinkedin" => $request->companyLinkedin,
-            "companyEmail" => $request->companyEmail,
-            "userLinkedin" => $request->userLinkedin,
-        ];
-        $lead->update($data);
-        return redirect()->route('dashboard')->with('success', 'CRM is updated.');
+    $lead->update($data);
+    return redirect()->route('dashboard')->with('success', 'CRM is updated.');
     }
 
     /**

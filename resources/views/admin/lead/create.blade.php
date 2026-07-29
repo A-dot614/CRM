@@ -7,9 +7,8 @@
             </a>
         </div>
 
-        <form action="{{route("dashboard")}}" enctype="multipart/form-data" method="POST" class="space-y-6">
-                @csrf
-            <input type="hidden" name="_token" value="your-csrf-token-here">
+        <form action="{{ route('dashboard.store') }}" enctype="multipart/form-data" method="POST" class="space-y-6">
+            @csrf
 
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
                 <h2 class="text-sm font-bold uppercase tracking-wider text-slate-400 mb-6 flex items-center gap-2">

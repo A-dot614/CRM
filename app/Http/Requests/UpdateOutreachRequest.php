@@ -23,7 +23,11 @@ class UpdateOutreachRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'lead_id' => ['required'],
+            'outreach_channel_id' => ['required'],
+            'date' => ['required'],
+            'score' => ['required'],
+            'note' => ['required'],
         ];
     }
 }
